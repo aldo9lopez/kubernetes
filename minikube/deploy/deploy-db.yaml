@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    api: mysql
+    zone: prod
+    nivel: backend
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      api: mysql
+      rol: bd
+      nivel: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        api: mysql
+        rol: bd
+        nivel: backend
+    spec:
+      volumes:
+      - name: pv-apireticula
+        persistentVolumeClaim:
+          claimName: pv-claim-apireticula
+      containers:
+      - name: mysql
+        image: aldeus13/mysql:lastest
+        ports:
+        - containerPort: 3306
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "1500m"
+        volumeMounts:
+          - mountPath: "/var/lib/mysql"
+            name: pv-apireticula

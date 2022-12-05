@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apireticula
+  labels:
+    api: apireticula
+    zone: prod
+    nivel: backend
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      api: apireticula
+      rol: webservice
+      nivel: backend
+  replicas: 7
+  template:
+    metadata:
+      labels:
+        api: apireticula
+        rol: webservice
+        nivel: backend
+    spec:
+      containers:
+        - name: apireticula
+          image: aldeus13/reticula:lastest
+          ports:
+          - containerPort: 80
